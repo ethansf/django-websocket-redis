@@ -65,14 +65,12 @@ class RedisSubscriber(RedisStore):
         """
         return self._subscription.connection and self._subscription.connection._sock.fileno()
 
-    #Kai Peng
-    def unsubscribe_pubsub_channels(self):
+    def release(self):
         """
         New implementation to free up Redis subscriptions when websockets close. This prevents
         memory sap when Redis Output Buffer and Output Lists build when websockets are abandoned.
         """
-        print 'Unsubscribing from pubsubs:'
-        for key in self.message_channels:
-            print 'Unsub from :', key
-            self._subscription.unsubscribe(key)
-            #Kai Peng
+        if self._subscription and self._subscription.subscribed:
+            self._subscription.unsubscribe()
+            self._subscription.reset()
+
