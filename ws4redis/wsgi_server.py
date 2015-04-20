@@ -130,4 +130,4 @@ class WebsocketWSGIServer(object):
             status = '{0} {1}'.format(response.status_code, status_text)
             start_response(force_str(status), response._headers.values())
         logger.info('Finish long living response with status code: {}'.format(response.status_code))
-        return response
+        return response.serialize()
