@@ -198,14 +198,14 @@ class WebSocket(object):
             raise WebSocketError("Connection is already closed")
         try:
             return self.read_message()
-        except UnicodeError:
-            logger.info('websocket.receive: UnicodeError')
+        except UnicodeError as e:
+            logger.info('websocket.receive: UnicodeError %s' % e)
             self.close(1007)
-        except WebSocketError:
-            logger.info('websocket.receive: WebSocketError')
+        except WebSocketError as e:
+            logger.info('websocket.receive: WebSocketError %s' % e)
             self.close(1002)
         except Exception as e:
-            logger.info('websocket.receive: Unknown error %s', e)
+            logger.info('websocket.receive: Unknown error %s' % e)
             raise e
 
     def flush(self):
